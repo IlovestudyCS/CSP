@@ -78,10 +78,6 @@ int main()
     string prename;
     for(int i = 0; i < N - 1; i++){
         if(v[i].name == v[i + 1].name && v[i].type == on_line && v[i + 1].type == off_line) {
-            if(v[i].name != prename) {
-                cout << v[i].name << " " << v[i].time[0] << endl;
-                prename = v[i].name;
-            }
             int total_time = 0, cost = 0;
             int day = atoi(v[i + 1].time[1].c_str()) - atoi(v[i].time[1].c_str());
             int hour = atoi(v[i + 1].time[2].c_str()) - atoi(v[i].time[2].c_str());
@@ -90,9 +86,15 @@ int main()
             total_time = day * 24 * 60 + hour * 60 + minute;
             cost = calcu_cost(v[i].time, total_time);
             total_cost += cost;
-            cout << v[i].time[1] <<":" << v[i].time[2] << ":" << v[i].time[3] <<
-            " " << v[i + 1].time[1] <<":" << v[i + 1].time[2] << ":" << v[i + 1].time[3] <<
-            " " << total_time << " $" << fixed << setprecision(2) <<(double) cost / 100 << endl;
+            if(cost != 0){
+                if(v[i].name != prename) {
+                    cout << v[i].name << " " << v[i].time[0] << endl;
+                    prename = v[i].name;
+                }
+                cout << v[i].time[1] <<":" << v[i].time[2] << ":" << v[i].time[3] <<
+                " " << v[i + 1].time[1] <<":" << v[i + 1].time[2] << ":" << v[i + 1].time[3] <<
+                " " << total_time << " $" << fixed << setprecision(2) <<(double) cost / 100 << endl;
+            }
         }
         if(v[i].name != v[i + 1].name && total_cost != 0) {
             cout << "Total amount: $" << fixed << setprecision(2) <<(double)total_cost / 100 << endl;
