@@ -71,7 +71,7 @@ int main()
         else if(c1.time[0] != c2.time[0]) return c1.time[0] < c2.time[0];
         else if(c1.time[1] != c2.time[1]) return c1.time[1] < c2.time[1];
         else if(c1.time[2] != c2.time[2]) return c1.time[2] < c2.time[2];
-        else return c1.time[3] < c1.time[3];
+        else return c1.time[3] < c2.time[3];
     });
     int total_cost = 0;
     bool flag = false;
