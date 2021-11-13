@@ -1,11 +1,12 @@
 /*
  * 1095 Cars on Campus
  */
-#include <iostream>
+#include <cstdio>
 #include <string>
 #include <algorithm>
 #include <vector>
 #include <set>
+#include<iomanip>
 
 using namespace std;
 
@@ -27,6 +28,7 @@ public:
     string sin;
     string sout;
     int interval;
+    int flag = false;
 };
 
 int N, K;
@@ -34,13 +36,17 @@ int N, K;
 int main()
 {
     vector<record> vr;
-    cin >> N >> K;
+    scanf("%d %d", &N, &K);
     for (int i = 0; i < N; i++)
     {
         record r;
         string t;
-        cin >> r.number;
-        cin >> t;
+        char buffer1[10];
+        char buffer2[10];
+        char buffer3[10];
+        scanf("%s %s %s", buffer1, buffer2, buffer3);
+        r.number = string(buffer1);
+        t = string(buffer2);
         int rest = 0;
         for (int j = 0; j < 3; j++)
         {
@@ -50,7 +56,7 @@ int main()
             rest = pos + 1;
         }
         string s;
-        cin >> s;
+        s = string(buffer3);
         if (s == "in")
             r.status = in;
         if (s == "out")
@@ -76,7 +82,7 @@ int main()
         for (int j = i + 1; j < N; j++)
         {
             
-            if (vr[i].number == vr[j].number && !((vr[i].status == 1) && (vr[j].status == 0)) && vr[j].flag == true)
+            if (vr[i].number == vr[j].number && (!((vr[i].status == 1) && (vr[j].status == 0)) || vr[j].flag == true))
             {
                 break;
             }
@@ -100,7 +106,9 @@ int main()
     for (int i = 0; i < K; i++)
     {
         string s;
-        cin >> s;
+        char buffer[10];
+        scanf("%s", buffer);
+        s = string(buffer);
         int cnt = 0;
         for (int j = 0; j < vc.size(); j++)
         {
@@ -109,10 +117,23 @@ int main()
                 cnt++;
             }
         }
-        cout << cnt << endl;
+        printf("%d\n", cnt);
     }
+
+    for(int i = 0; i < vc.size(); i++) {
+        for(int j = i + 1; j < vc.size(); j++) {
+            if(vc[i].number == vc[j].number && vc[j].flag == false) {
+                vc[i].interval += vc[j].interval;
+                vc[j].flag = true;
+            }
+        }
+    }
+
     for (int i = 0; i < vc.size(); i++)
     {
+        if(vc[i].flag) {
+            continue;
+        }
         if (vc[i].interval > max)
         {
             max = vc[i].interval;
@@ -125,24 +146,8 @@ int main()
         }
     }
     for(auto i = maxCar.begin(); i != maxCar.end(); i++) {
-        cout << *i << " ";
+        printf("%s ", (*i).c_str());
     }
-    cout << max / 3600 << ":" << max % 3600 / 60 << ":" << max % 60;
+    printf("%02d:%02d:%02d", max / 3600, max % 3600 / 60, max % 60);
     return 0;
 }
-// JH007BD 18:00:01 in
-// ZD00001 11:30:08 out
-// DB8888A 13:00:00 out
-// ZA3Q625 23:59:50 out
-// ZA133CH 10:23:00 in
-// ZD00001 04:09:59 in
-// JH007BD 05:09:59 in
-// ZA3Q625 11:42:01 out
-// JH007BD 05:10:33 in
-// ZA3Q625 06:30:50 in
-// JH007BD 12:23:42 out
-// ZA3Q625 23:55:00 in
-// JH007BD 12:24:23 out
-// ZA133CH 17:11:22 out
-// JH007BD 18:07:01 out
-// DB8888A 06:30:50 in
