@@ -1,51 +1,48 @@
 #include<iostream>
+#include<algorithm>
 using namespace std;
 
 int m;
-int result[100010] = {0};
-int score[100010] = {0};
-int maxV[100010] = {0};
+
+struct stu
+{
+    int score;
+    int result;
+} stus[100010];
+int sum[100010] = {0};
+
+int totalpass = 0;
+
 int main()
 {
 	cin >> m;
+    stu s;
+    s.score = 0;
+    s.result = -1;
+    fill(stus, stus + m, s);
     for(int i = 0; i < m; i++) {
-        cin >> score[i];
-        cin >> result[i];
+        cin >> stus[i].score>> stus[i].result;
+        if(stus[i].result == 1) totalpass++;
     }
-    int max = 0, theta = 0, maxtheta = 0, pos = 0;
-    for(int i = 0; i < m; i++) {
-        int cnt = 0;
-        for(int j = 0; j < m; j++) {
-            if(score[i] > score[j] && result[j] == 0) {
-                cnt++;
-            }
-            if(score[i] <= score[j] && result[j] == 1) {
-                cnt++;
-            }
+    sort(stus, stus + m, [](stu s1, stu s2)->bool{
+        return s1.score < s2.score;
+    });
+    sum[0] = 0;
+    int Max = 0, id = 0, pre = 0;
+    for(int i = 1; i < m; i++) {
+        sum[i] = sum[i - 1] + 1 - stus[i - 1].result;
+        int prepass = i - sum[i];
+        int ans = 0;
+        if(stus[i].score != stus[i - 1].score) {
+            pre = sum[i];
         }
-        // if(max <= cnt) {
-        //     max = cnt;
-        //     if(max == cnt) {
-        //         if(theta < score[i])
-        //         theta = score[i];
-        //     }else{
-        //         theta = score[i];
-        //     }
-        // }
-        if(max <= cnt) {
-            if(max == cnt) {
-                maxV[pos++] = result[i];
-            } else{
-                max = cnt;
-                pos = 0;
-                maxV[pos++] = result[i];
-            }
+        ans = pre + totalpass - prepass;
+        if(Max <= ans) {
+            Max = ans;
+            id = stus[i].score;
         }
     }
-    max = 0;
-    for(int i = 0; i <= pos; i++) {
-        if(max < maxV[i]) max = maxV[i];
-    }
-    cout << max;
+
+    cout << id;
 	return 0;	
 }
