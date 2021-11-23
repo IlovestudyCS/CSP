@@ -7,12 +7,12 @@ int n, a, b;
 
 int main()
 {
-    map<int, pair<bool, int>> v;
+    map<long, pair<bool, long long>> v;
     cin >> n >> a >> b;
     for(int i = 0; i < a + b; i++) {
-        int index, value;
+        long index, value;
         cin >> index >> value;
-        pair<bool, int> p;
+        pair<bool, long long> p;
         p.first = false;
         p.second = 0;
         if(v.find(index) == v.end()) {
@@ -24,7 +24,7 @@ int main()
             v[index] = p;
         }
     }
-    int sum = 0;
+    long long sum = 0;
     for(auto i : v) {
         if(i.second.first == true)
         sum += (i.second.second);
